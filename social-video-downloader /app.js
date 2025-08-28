@@ -14,8 +14,10 @@ function humanSize(bytes) {
   return `${b.toFixed(1)} ${units[i]}`;
 }
 
+
+
 async function extract(url) {
-  const res = await fetch(`/api/extract?url=${encodeURIComponent(url)}`);
+  const res = await fetch(`https://social-video-downloader-qtn8.onrender.com/api/extract?url=${encodeURIComponent(url)}`);
   return res.json();
 }
 

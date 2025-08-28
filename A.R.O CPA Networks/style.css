@@ -1,0 +1,578 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f5f7fa;
+  color: #222;
+}
+
+header {
+  background: linear-gradient(90deg, #111, #444);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+nav a {
+  margin-left: 1rem;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+}
+
+.hero {
+  text-align: center;
+  padding: 3rem 1rem;
+  background: linear-gradient(135deg, #3b82f6, #9333ea);
+  color: #fff;
+}
+
+.hero h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.8rem 1.4rem;
+  background: #000;
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.2s ease;
+}
+
+.btn:hover {
+  background: #333;
+}
+
+.section {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.card h3 {
+  margin-top: 0;
+}
+
+.footer {
+  text-align: center;
+  background: #111;
+  color: #fff;
+  padding: 1rem;
+  font-size: 0.85rem;
+}
+
+
+
+
+
+
+
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #f8fafc, #eef2f7);
+  color: #1e293b;
+  line-height: 1.6;
+}
+
+/* Global container */
+.container {
+  width: 90%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+/* Header */
+header {
+  text-align: center;
+  padding: 40px 0;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  border-bottom: 2px solid #e2e8f0;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+header p {
+  color: #475569;
+  margin-top: 8px;
+  font-size: 1rem;
+}
+
+/* Cards (homepage networks list) */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  margin-top: 40px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+.card h2 {
+  font-size: 1.3rem;
+  color: #1e293b;
+  margin-bottom: 12px;
+}
+
+.card p {
+  font-size: 0.95rem;
+  color: #64748b;
+  margin-bottom: 16px;
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+  background: linear-gradient(135deg, #1d4ed8, #6d28d9);
+  transform: translateY(-2px);
+}
+
+/* Inner pages (network pages) */
+.network-page {
+  background: #fff;
+  padding: 50px;
+  margin: 40px auto;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  max-width: 800px;
+  text-align: center;
+}
+
+.network-page h1 {
+  font-size: 2rem;
+  color: #0f172a;
+  margin-bottom: 16px;
+}
+
+.network-page p {
+  color: #475569;
+  font-size: 1rem;
+  margin-bottom: 25px;
+}
+
+
+
+/* Fade-in animations */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease-in-out;
+}
+
+.fade-in.appear {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Floating button (scroll-to-top) */
+#scrollTopBtn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  display: none;
+  z-index: 1000;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+#scrollTopBtn.show {
+  display: block;
+}
+
+#scrollTopBtn:hover {
+  transform: scale(1.1);
+  background: linear-gradient(135deg, #1d4ed8, #6d28d9);
+}
+
+
+
+/* Fade-in animations */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease-in-out;
+}
+
+.fade-in.appear {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Floating button (scroll-to-top) */
+#scrollTopBtn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  display: none;
+  z-index: 1000;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+#scrollTopBtn.show {
+  display: block;
+}
+
+#scrollTopBtn:hover {
+  transform: scale(1.1);
+  background: linear-gradient(135deg, #1d4ed8, #6d28d9);
+}
+
+
+.earning {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: white;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 15px;
+  color: #374151;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease;
+  flex-direction: row;
+}
+
+.earning span {
+  font-weight: 500;
+  display: block;
+}
+
+.earning .comment {
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 2px;
+  font-style: italic;
+}
+
+.avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+
+
+.earnings-feed {
+  position: relative;
+  height: 80px; /* adjust depending on item size */
+  overflow: hidden;
+}
+
+.earning {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.earning.active {
+  opacity: 1;
+  transform: translateY(0);
+  position: relative;
+}
+
+
+
+.live-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-left: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: blink 1s infinite alternate;
+}
+
+@keyframes blink {
+  from { opacity: 1; }
+  to { opacity: 0.3; }
+}
+
+.comment {
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 3px;
+  font-style: italic;
+}
+
+
+
+
+
+
+
+
+/* Fade-in animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.fade-in.appear {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Earnings feed container */
+#earningsFeed {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  font-family: Arial, sans-serif;
+}
+
+/* Individual earning */
+.earning {
+  display: flex;
+  align-items: center;
+  margin: 12px 0;
+  padding: 10px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.earning .avatar {
+  font-size: 24px;
+  margin-right: 12px;
+}
+
+.earning span {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.earning .comment {
+  font-size: 13px;
+  margin-top: 2px;
+  color: #4b5563;
+}
+
+/* Fade-in animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.fade-in.appear {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Earnings feed container */
+#earningsFeed {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  font-family: Arial, sans-serif;
+}
+
+/* Individual earning */
+.earning {
+  display: flex;
+  align-items: center;
+  margin: 12px 0;
+  padding: 10px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.earning .avatar {
+  font-size: 24px;
+  margin-right: 12px;
+}
+
+.earning span {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.earning .comment {
+  font-size: 13px;
+  margin-top: 2px;
+  color: #4b5563;
+}
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Fade-in on scroll */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease-out;
+}
+.fade-in.appear {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Earnings section */
+.earnings-section {
+  margin: 30px auto;
+  text-align: center;
+}
+
+.earnings-title {
+  font-size: 1.3rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.earnings-title .dot {
+  height: 8px;
+  width: 8px;
+  background: green;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Earnings box */
+#earnings-box {
+  margin-top: 15px;
+  min-height: 70px; /* prevents jumpy layout */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s ease-in-out;
+  opacity: 0;
+}
+#earnings-box.show {
+  opacity: 1;
+}
+
+/* Card style */
+.earning-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  padding: 12px 18px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  max-width: 350px;
+  animation: fadeInScale 0.5s ease-in-out;
+}
+
+.earning-avatar {
+  font-size: 30px;
+}
+
+.earning-details {
+  text-align: left;
+}
+.earning-details strong {
+  font-size: 1rem;
+  display: block;
+  color: #333;
+}
+.earning-details p {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 3px;
+}
+
+/* Animation for new card */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

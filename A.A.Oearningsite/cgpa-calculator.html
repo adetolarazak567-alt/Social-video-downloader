@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CGPA Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      background-color: #1e1e1e;
+      color: white;
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    h1 {
+      color: white;
+      text-align: center;
+    }
+    label, input {
+      display: block;
+      margin: 10px 0;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+    button {
+      background-color: #008cba;
+      color: whitesmoke;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      width: 100%;
+      margin-top: 10px;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #00ff99;
+      text-align: center;
+    }
+    .back-home {
+      display: block;
+      background-color: white;
+      color: black;
+      text-align: center;
+      padding: 10px;
+      margin-top: 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📊 CGPA Calculator</h1>
+
+  <div id="semesters">
+    <label>Semester 1 GPA:</label>
+    <input type="number" step="0.01" class="gpa" placeholder="e.g. 3.5">
+    <label>Credits for Semester 1:</label>
+    <input type="number" class="credits" placeholder="e.g. 20">
+  </div>
+
+  <button onclick="addSemester()">➕ Add Another Semester</button>
+  <button onclick="calculateCGPA()">✅ Calculate CGPA</button>
+
+  <div class="result" id="cgpaResult"></div>
+
+  <a href="index.html" class="back-home">🔙 Back to Home</a>
+
+  <script>
+    function addSemester() {
+      const container = document.getElementById("semesters");
+      const count = container.querySelectorAll(".gpa").length + 1;
+
+      const gpaLabel = document.createElement("label");
+      gpaLabel.textContent = `Semester ${count} GPA:`;
+      const gpaInput = document.createElement("input");
+      gpaInput.type = "number";
+      gpaInput.step = "0.01";
+      gpaInput.className = "gpa";
+      gpaInput.placeholder = "e.g. 3.0";
+
+      const creditLabel = document.createElement("label");
+      creditLabel.textContent = `Credits for Semester ${count}:`;
+      const creditInput = document.createElement("input");
+      creditInput.type = "number";
+      creditInput.className = "credits";
+      creditInput.placeholder = "e.g. 18";
+
+      container.appendChild(gpaLabel);
+      container.appendChild(gpaInput);
+      container.appendChild(creditLabel);
+      container.appendChild(creditInput);
+    }
+
+    function calculateCGPA() {
+      const gpas = document.querySelectorAll(".gpa");
+      const credits = document.querySelectorAll(".credits");
+      let totalPoints = 0;
+      let totalCredits = 0;
+
+      for (let i = 0; i < gpas.length; i++) {
+        const gpa = parseFloat(gpas[i].value);
+        const credit = parseFloat(credits[i].value);
+        if (!isNaN(gpa) && !isNaN(credit)) {
+          totalPoints += gpa * credit;
+          totalCredits += credit;
+        }
+      }
+
+      const cgpa = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : 0;
+      document.getElementById("cgpaResult").textContent = `Your CGPA is: ${cgpa}`;
+    }
+  </script>
+
+</body>
+</html>

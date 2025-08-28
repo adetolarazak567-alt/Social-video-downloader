@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JAMB CBT Practice</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1e1e1e;
+      color: #fff;
+      margin: 0;
+      padding: 20px;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #2c2c2c;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    label, select, button {
+      display: block;
+      width: 100%;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+    button {
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>JAMB CBT Practice</h1>
+    <h2>Select 4 Subjects</h2>
+    <form id="subjectForm">
+      <label for="subject1">Subject 1:</label>
+      <select id="subject1" required></select>
+
+      <label for="subject2">Subject 2:</label>
+      <select id="subject2" required></select>
+
+      <label for="subject3">Subject 3:</label>
+      <select id="subject3" required></select>
+
+      <label for="subject4">Subject 4:</label>
+      <select id="subject4" required></select>
+
+      <button type="submit">Start CBT Test</button>
+    </form>
+  </div>
+
+  <script>
+    const subjects = [
+      "English", "Mathematics", "Biology", "Physics", "Chemistry",
+      "Government", "Economics", "Geography", "Literature", "CRS"
+    ];
+
+    function populateSelects() {
+      const selects = ["subject1", "subject2", "subject3", "subject4"];
+      selects.forEach(id => {
+        const select = document.getElementById(id);
+        subjects.forEach(subject => {
+          const option = document.createElement("option");
+          option.value = subject;
+          option.textContent = subject;
+          select.appendChild(option);
+        });
+      });
+    }
+
+    document.getElementById("subjectForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const selectedSubjects = [
+        subject1.value, subject2.value, subject3.value, subject4.value
+      ];
+      if (new Set(selectedSubjects).size < 4) {
+        alert("Please select 4 different subjects.");
+        return;
+      }
+      localStorage.setItem("selectedSubjects", JSON.stringify(selectedSubjects));
+      location.href = "cbt-quiz.html";
+    });
+
+    populateSelects();
+  </script>
+</body>
+</html>
+  <a href="index.html" class="back-home">🔙 Back to Home</a>
+
+<div style="background: #ff9800; color: #000; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: bold;">
+  🚧 This CBT Test is not fully coded yet — Feature in Progress. Please check back soon!
+</div>

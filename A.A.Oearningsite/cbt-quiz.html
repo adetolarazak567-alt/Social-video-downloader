@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CBT Quiz</title>
+  <style>
+    body {
+      background-color: #1e1e1e;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .quiz-section {
+      background-color: #2c2c2c;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    h2 {
+      color: #0af;
+    }
+    .question {
+      margin-bottom: 15px;
+    }
+    button {
+      background-color: #28a745;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+    #timer {
+      font-size: 20px;
+      color: #ff4444;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>CBT Quiz</h1>
+  <div id="timer">Time Left: 02:00:00</div>
+
+  <div id="quiz-container">
+    <!-- Questions will load here -->
+  </div>
+
+  <button onclick="submitAnswers()">Submit Answers</button>
+
+  <script>
+    const subjects = JSON.parse(localStorage.getItem("selectedSubjects")) || ["English", "Math", "Biology", "Government"];
+
+    const dummyQuestions = {
+      English: ["What is a noun?", "Choose the correct verb."],
+      Math: ["Solve: 2 + 2", "What is the square root of 16?"],
+      Biology: ["What is photosynthesis?", "What organ pumps blood?"],
+      Government: ["Who is the president of Nigeria?", "What is democracy?"]
+    };
+
+    function loadQuestions() {
+      const container = document.getElementById("quiz-container");
+      subjects.forEach(subject => {
+        const section = document.createElement("div");
+        section.className = "quiz-section";
+        section.innerHTML = `<h2>${subject}</h2>`;
+
+        const questions = dummyQuestions[subject] || ["No questions available."];
+        questions.forEach((q, index) => {
+          const div = document.createElement("div");
+          div.className = "question";
+          div.innerHTML = `
+            <p>${index + 1}. ${q}</p>
+            <input type="text" placeholder="Your answer here" style="width: 100%; padding: 8px;"/>
+          `;
+          section.appendChild(div);
+        });
+
+        container.appendChild(section);
+      });
+    }
+
+    function submitAnswers() {
+      alert("Answers submitted! Your result will be shown soon.");
+      // You can later improve this to score and show results
+    }
+
+    function startTimer(duration) {
+      let timer = duration, hours, minutes, seconds;
+      const timerDisplay = document.getElementById("timer");
+
+      const interval = setInterval(() => {
+        hours = parseInt(timer / 3600, 10);
+        minutes = parseInt((timer % 3600) / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        timerDisplay.textContent = `Time Left: ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+        if (--timer < 0) {
+          clearInterval(interval);
+          submitAnswers();
+        }
+      }, 1000);
+    }
+
+    // Start everything
+    loadQuestions();
+    startTimer(2 * 60 * 60); // 2 hours
+  </script>
+
+</body>
+</html>
+  <a href="index.html" class="back-home">🔙 Back to Home</a
+  <a href="https://shrinkme.io/YOUR-AD-LINK" class="tool-button" target="_blank">
+ 
+
+<div style="background: #ff9800; color: #000; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: bold;">
+  🚧 This CBT Test is not fully coded yet — Feature in Progress. Please check back soon!
+</div>

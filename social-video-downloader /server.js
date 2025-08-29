@@ -1,100 +1,54 @@
-import express from 'express';
-import cors from 'cors';
-import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
-import morgan from 'morgan';
-import pino from 'pino';
-import { execFile } from 'child_process';
-import { fileURLToPath } from 'url';
-import { dirname, resolve } from 'path';
-import dotenv from 'dotenv';
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import { exec } from "child_process";
 
 dotenv.config();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const app = express();
-const logger = pino({ level: process.env.NODE_ENV === 'production' ? 'info' : 'debug' });
+const PORT = process.env.PORT || 10000;
 
-const PORT = process.env.PORT || 8080;
-const YTDLP = process.env.YTDLP_PATH || 'yt-dlp'; // default to yt-dlp in PATH
+// Middleware
+app.use(cors({ origin: process.env.ALLOWED_ORIGINS || "*" }));
+app.use(express.json());
 
-// Allowed origins for CORS
-const allowed = (process.env.ALLOWED_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean);
-app.use(cors({
-  origin: (origin, cb) => {
-    if (!origin) return cb(null, true);
-    if (allowed.length === 0 || allowed.includes(origin)) return cb(null, true);
-    return cb(new Error('Not allowed by CORS'));
-  }
-}));
-
-app.use(helmet({ contentSecurityPolicy: false }));
-app.use(morgan('tiny'));
-
-const limiter = rateLimit({ windowMs: 60 * 1000, max: 45 });
-app.use('/api/', limiter);
-
-// Serve frontend if placed inside /public
-app.use(express.static(resolve(__dirname, 'public')));
-
-const VALID_URL = /^(https?:\/\/)[^\s]+$/i;
-
-function execYtDlpJson(url) {
-  return new Promise((resolveP, rejectP) => {
-    const args = ['-J', '--no-warnings', '--no-playlist', '--skip-download', url];
-    execFile(YTDLP, args, { timeout: 30000 }, (err, stdout, stderr) => {
-      if (err) return rejectP(new Error(stderr || err.message));
-      try {
-        resolveP(JSON.parse(stdout));
-      } catch {
-        rejectP(new Error('Failed to parse yt-dlp output'));
-      }
-    });
-  });
-}
-
-function extractFormats(info) {
-  const results = [];
-  const title = info.title || 'video';
-  const thumb = Array.isArray(info.thumbnails) && info.thumbnails.length
-    ? info.thumbnails.at(-1).url
-    : info.thumbnail || '';
-
-  if (Array.isArray(info.formats)) {
-    for (const f of info.formats) {
-      if (!f.url) continue;
-      // Skip audio-only formats (optional)
-      if (!f.vcodec || f.vcodec === 'none') continue;
-      results.push({
-        url: f.url,
-        ext: f.ext,
-        quality: f.format_note || (f.height ? `${f.height}p` : 'Unknown'),
-        filesize: f.filesize || f.filesize_approx || null,
-        hasAudio: f.acodec && f.acodec !== 'none'
-      });
-    }
-  }
-  return { title, thumb, formats: results };
-}
-
-// API endpoint
-app.get('/api/extract', async (req, res) => {
-  try {
-    const url = (req.query.url || '').toString().trim();
-    if (!url || !VALID_URL.test(url)) {
-      return res.status(400).json({ ok: false, error: 'Invalid or missing URL' });
-    }
-
-    const info = await execYtDlpJson(url);
-    const payload = extractFormats(info);
-    res.json({ ok: true, meta: payload });
-  } catch (e) {
-    logger.error(e);
-    res.status(500).json({ ok: false, error: e.message });
-  }
+// Health check route
+app.get("/", (req, res) => {
+  res.send("✅ Social Video Downloader Server is running!");
 });
 
+// Example download route
+app.post("/download", (req, res) => {
+  const { url } = req.body;
+  if (!url) return res.status(400).json({ error: "No URL provided" });
+
+  const ytdlpPath = process.env.YTDLP_PATH || "yt-dlp";
+  const command = `${ytdlpPath} -j ${url}`;
+
+  exec(command, (error, stdout, stderr) => {
+    if (error) {
+      console.error(stderr);
+      return res.status(500).json({ error: "Download failed" });
+    }
+
+    try {
+      const data = JSON.parse(stdout);
+      res.json({
+        title: data.title,
+        thumbnail: data.thumbnail,
+        formats: data.formats.map(f => ({
+          url: f.url,
+          quality: f.format_note,
+          ext: f.ext
+        }))
+      });
+    } catch (err) {
+      res.status(500).json({ error: "Failed to parse video info" });
+    }
+  });
+});
+
+// Start server
 app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });

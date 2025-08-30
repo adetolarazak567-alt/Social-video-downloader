@@ -45,12 +45,12 @@ input[type="url"] {
 }
 
 button {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.5rem;
   border: none;
   background: #007bff;
   color: #fff;
-  font-size: 1rem;
-  border-radius: 8px;
+  font-size: 1.1rem;
+  border-radius: 10px;
   cursor: pointer;
   transition: background 0.3s ease;
 }

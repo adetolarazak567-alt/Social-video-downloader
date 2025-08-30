@@ -6,8 +6,9 @@ const thumb = document.getElementById('thumb');
 const title = document.getElementById('title');
 const formatsDiv = document.getElementById('formats');
 
-const API_URL = "https://your-render-backend.onrender.com/download"; // <-- Replace with your Render URL
-
+// Your app.js uses:
+const API_URL = "https://social-video-downloader-14.onrender.com"; 
+// On Railway, you will replace this with your Railway URL once deployed
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   const videoURL = input.value.trim();

@@ -107,3 +107,23 @@ button:hover {
   color: #888;
   font-size: 0.85rem;
 }
+
+.format-btn {
+  display: inline-block;
+  margin: 6px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.format-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+  background: linear-gradient(135deg, #4338ca, #4f46e5);
+}

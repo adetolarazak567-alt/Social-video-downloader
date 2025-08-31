@@ -1,7 +1,9 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { exec } from "child_process";
+import fetch from "node-fetch";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 
@@ -12,40 +14,45 @@ const PORT = process.env.PORT || 10000;
 app.use(cors({ origin: process.env.ALLOWED_ORIGINS || "*" }));
 app.use(express.json());
 
+// Setup __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve static frontend files
+app.use(express.static(path.join(__dirname, "public")));
+
 // Health check route
-app.get("/", (req, res) => {
-  res.send("✅ Social Video Downloader Server is running!");
+app.get("/api", (req, res) => {
+  res.send("✅ Social Video Downloader API is running!");
 });
 
-// Example download route
-app.post("/download", (req, res) => {
+// Download route
+app.post("/api/download", async (req, res) => {
   const { url } = req.body;
   if (!url) return res.status(400).json({ error: "No URL provided" });
 
-  const ytdlpPath = process.env.YTDLP_PATH || "yt-dlp";
-  const command = `${ytdlpPath} -j ${url}`;
+  try {
+    const response = await fetch("https://social-download-all-in-one.p.rapidapi.com/v1/social/autolink", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "X-RapidAPI-Key": process.env.RAPIDAPI_KEY,
+        "X-RapidAPI-Host": "social-download-all-in-one.p.rapidapi.com"
+      },
+      body: JSON.stringify({ url })
+    });
 
-  exec(command, (error, stdout, stderr) => {
-    if (error) {
-      console.error(stderr);
-      return res.status(500).json({ error: "Download failed" });
+    if (!response.ok) {
+      const errorText = await response.text();
+      return res.status(500).json({ error: "API call failed", details: errorText });
     }
 
-    try {
-      const data = JSON.parse(stdout);
-      res.json({
-        title: data.title,
-        thumbnail: data.thumbnail,
-        formats: data.formats.map(f => ({
-          url: f.url,
-          quality: f.format_note,
-          ext: f.ext
-        }))
-      });
-    } catch (err) {
-      res.status(500).json({ error: "Failed to parse video info" });
-    }
-  });
+    const data = await response.json();
+    res.json(data);
+
+  } catch (err) {
+    res.status(500).json({ error: "Server error", details: err.message });
+  }
 });
 
 // Start server

@@ -1,40 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Social Video Downloader</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#0ea5e9" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* 🎨 same styles as you had, untouched */
+    :root{
+      --bg:#0b1220;
+      --card:#0f172a;
+      --muted:#94a3b8;
+      --text:#e2e8f0;
+      --brand:#0ea5e9;
+      --brand-2:#22d3ee;
+      --ok:#22c55e;
+      --warn:#f59e0b;
+      --err:#ef4444;
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(34,211,238,.12), transparent 60%),
+        radial-gradient(1000px 500px at 110% -20%, rgba(14,165,233,.15), transparent 55%),
+        var(--bg);
+    }
+    header{
+      max-width:960px;margin:32px auto 0;padding:0 16px 16px;text-align:center
+    }
+    .title{
+      font-size:clamp(24px,5vw,40px);
+      font-weight:800;letter-spacing:-.02em;
+      background:linear-gradient(90deg,var(--brand),var(--brand-2));
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      margin:12px 0 6px;
+    }
+    .subtitle{color:var(--muted);font-weight:500}
+    .card{
+      max-width:960px;margin:18px auto;padding:20px 16px;
+      background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));
+      backdrop-filter: blur(6px);
+      border:1px solid rgba(148,163,184,.18);
+      border-radius:var(--radius);
+      box-shadow:0 10px 30px rgba(2,6,23,.35);
+    }
+    .row{display:flex;gap:10px;align-items:center}
+    .row.stack{flex-direction:column}
+    @media (min-width:680px){.row{flex-direction:row}}
+    .input{
+      flex:1;width:100%;
+      display:flex;align-items:center;gap:10px;
+      background:#0b1328;border:1px solid rgba(148,163,184,.25);
+      border-radius:12px;padding:12px 14px;
+    }
+    .input input{
+      flex:1;background:transparent;border:0;color:var(--text);
+      font-size:15px;outline:none
+    }
+    button{
+      appearance:none;border:0;cursor:pointer;
+      background:linear-gradient(90deg,var(--brand),var(--brand-2));
+      color:#001018;font-weight:800;padding:12px 18px;border-radius:12px;
+      transition:transform .08s ease, filter .2s ease; white-space:nowrap;
+    }
+    button:active{transform:translateY(1px)}
+    .status{
+      margin:10px 2px 0;font-size:13px;color:var(--muted)
+    }
+    .status.ok{color:var(--ok)} .status.warn{color:var(--warn)} .status.err{color:var(--err)}
+    .result{
+      margin-top:18px;display:grid;gap:14px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width:760px){.result{grid-template-columns: 260px 1fr}}
+    .thumb{
+      width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;
+      background:#0b1328;border:1px solid rgba(148,163,184,.2)
+    }
+    .meta h3{margin:0 0 4px;font-size:18px}
+    .meta .small{color:var(--muted);font-size:13px}
+    .formats{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
+    .format{
+      display:flex;align-items:center;justify-content:space-between;gap:8px;
+      padding:10px 12px;border-radius:12px;border:1px solid rgba(148,163,184,.22);
+      background:#0b1328;
+    }
+    .format a{
+      text-decoration:none;color:var(--text);font-weight:600
+    }
+    .badge{font-size:12px;border-radius:999px;padding:4px 8px;background:rgba(14,165,233,.15);border:1px solid rgba(14,165,233,.35)}
+    .badges{display:flex;gap:6px;flex-wrap:wrap}
+    .muted{color:var(--muted)}
+    .footer{
+      text-align:center;color:var(--muted);font-size:12px;padding:18px
+    }
+    .spinner{
+      width:18px;height:18px;border:3px solid rgba(148,163,184,.35);border-top-color:var(--brand);
+      border-radius:50%;display:inline-block;animation:spin .8s linear infinite;vertical-align:-3px;margin-right:8px
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+  </style>
 </head>
 <body>
-  <header class="container">
-    <h1>Social Video Downloader</h1>
-    <p class="muted">Paste a TikTok, Instagram, Facebook, Twitter/X or Snapchat link</p>
+  <header>
+    <div class="title">Social Video Downloader</div>
+    <div class="subtitle">Paste a TikTok, Instagram, Facebook, X/Twitter, Snapchat, or YouTube link</div>
   </header>
 
-  <div class="container card">
-    <form id="form">
-      <input id="url" type="url" placeholder="https://..." required />
-      <button type="submit">Generate</button>
+  <main class="card">
+    <form id="form" class="row stack">
+      <label class="input" aria-label="Video URL">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M10 14a5 5 0 0 0 7.07 0l1.41-1.41a5 5 0 0 0-7.07-7.07L10 6" stroke="#7dd3fc" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M14 10a5 5 0 0 0-7.07 0L5.5 11.43a5 5 0 1 0 7.07 7.07L14 18" stroke="#67e8f9" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <input id="url" type="url" placeholder="https://..." required />
+      </label>
+      <button id="goBtn" type="submit">Generate Links</button>
     </form>
+    <div id="status" class="status"></div>
 
-    <div id="status" class="status hidden"></div>
-
-    <section id="result" class="hidden">
-      <div class="meta">
-        <img id="thumb" alt="thumbnail" />
-        <div>
-          <h3 id="title"></h3>
+    <section id="result" style="display:none">
+      <div class="result">
+        <img id="thumb" class="thumb" alt="Thumbnail"/>
+        <div class="meta">
+          <h3 id="title">—</h3>
+          <div class="small muted" id="metaLine">—</div>
+          <div class="formats" id="formats"></div>
         </div>
       </div>
-      <div class="formats" id="formats"></div>
     </section>
-  </div>
+  </main>
 
-  <footer class="container foot">
-    <small>We don’t host content. Links are fetched directly from platforms.</small>
-  </footer>
+  <p class="footer">We don’t host content. Links are fetched from public endpoints. Use respectfully.</p>
 
+  <!-- now everything API-related comes only from app.js -->
   <script src="app.js"></script>
 </body>
 </html>

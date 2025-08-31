@@ -1,53 +1,52 @@
-const form = document.getElementById('form');
-const input = document.getElementById('url');
-const statusBox = document.getElementById('status');
-const result = document.getElementById('result');
-const thumb = document.getElementById('thumb');
-const title = document.getElementById('title');
-const formatsDiv = document.getElementById('formats');
-
-function humanSize(bytes) {
-  if (!bytes) return '';
-  const units=['B','KB','MB','GB'];
-  let i=0, b=bytes;
-  while (b>=1024 && i<units.length-1) { b/=1024; i++; }
-  return `${b.toFixed(1)} ${units[i]}`;
-}
-
-
-
-async function extract(url) {
-  const res = await fetch(`https://social-video-downloader-qtn8.onrender.com/api/extract?url=${encodeURIComponent(url)}`);
-  return res.json();
-}
-
-function formatCard(f) {
-  const label = [f.resolution || '', f.ext?.toUpperCase() || '', f.hasAudio?'Audio✔':'No Audio']
-    .filter(Boolean).join(' · ');
-  const size = f.filesize ? ` · ${humanSize(f.filesize)}` : '';
-  const div = document.createElement('div');
-  div.className = 'format';
-  div.innerHTML = `<div>${label}${size}</div><a href=\"${f.url}\" download>Download</a>`;
-  return div;
-}
+const API_URL = 'https://YOUR_PERMANENT_DEPLOYMENT_URL'; // optional, or just call directly
+const RAPIDAPI_URL = 'https://download-all-in-one-elite.p.rapidapi.com/';
+const RAPIDAPI_KEY = '1cc2a2724cmshb3a716d3dbd51e8p1dd3d4jsn1b77fdb09e5c'; // your RapidAPI key
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const url = input.value.trim();
+  const videoURL = input.value.trim();
+  if (!videoURL) return;
+
+  statusBox.textContent = "Fetching video info...";
   statusBox.classList.remove('hidden');
-  statusBox.textContent = 'Fetching…';
-  result.classList.add('hidden');
+  resultSection.classList.add('hidden');
   formatsDiv.innerHTML = '';
 
   try {
-    const data = await extract(url);
-    if (!data.ok) throw new Error(data.error);
-    title.textContent = data.meta.title;
-    if (data.meta.thumb) thumb.src = data.meta.thumb;
-    data.meta.formats.forEach(f => formatsDiv.appendChild(formatCard(f)));
+    const apiResponse = await fetch(RAPIDAPI_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-RapidAPI-Key': RAPIDAPI_KEY,
+        'X-RapidAPI-Host': 'download-all-in-one-elite.p.rapidapi.com'
+      },
+      body: JSON.stringify({ url: videoURL })
+    });
+
+    const data = await apiResponse.json();
+    if (data.error) {
+      statusBox.textContent = data.error.message || 'Error fetching video';
+      return;
+    }
+
     statusBox.classList.add('hidden');
-    result.classList.remove('hidden');
-  } catch(err) {
-    statusBox.textContent = 'Error: ' + err.message;
+    resultSection.classList.remove('hidden');
+    thumb.src = data.thumbnail || '';
+    title.textContent = data.title || 'Video';
+
+    (data.formats || []).forEach(format => {
+      const btn = document.createElement('a');
+      btn.href = format.url;
+      btn.textContent = `${format.quality || format.format} - ${format.ext}`;
+      btn.className = 'format-btn';
+      btn.target = "_blank";
+      formatsDiv.appendChild(btn);
+    });
+
+  } catch (err) {
+    console.error(err);
+    statusBox.textContent = "Failed to fetch video info. Try again.";
   }
 });
+
+

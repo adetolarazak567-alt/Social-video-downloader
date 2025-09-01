@@ -143,5 +143,39 @@
 
   <!-- now everything API-related comes only from app.js -->
   <script src="app.js"></script>
+  
+  
+  
+  <!-- Your existing Generate bar -->
+<input type="text" id="generateInput" placeholder="Paste link for RapidAPI">
+<button onclick="generateVideo()">Generate</button>
+
+<!-- Add this below it -->
+<h2>Facebook Share Link Converter</h2>
+<input type="text" id="shareLink" placeholder="Paste Facebook share link">
+<button onclick="convertLink()">Convert</button>
+<p>Converted Link:</p>
+<input type="text" id="convertedLink" readonly>
+
+<script>
+  async function convertLink() {
+    const shareLink = document.getElementById("shareLink").value.trim();
+    if (!shareLink) return alert("Paste a share link first!");
+
+    try {
+      const res = await fetch("/api/resolve-facebook", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: shareLink })
+      });
+      const data = await res.json();
+      document.getElementById("convertedLink").value = data.realUrl || "Could not resolve link";
+    } catch (err) {
+      console.error(err);
+      alert("Error converting link");
+    }
+  }
+</script>
+
 </body>
 </html>

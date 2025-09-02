@@ -84,3 +84,10 @@ form.addEventListener('submit', async (e) => {
     statusBox.textContent = "Failed to fetch video info. Try again.";
   }
 });
+
+const resultSection = document.getElementById("result");
+
+// When video info is ready:
+resultSection.classList.remove("show"); // reset if needed
+void resultSection.offsetWidth; // force reflow for restart
+resultSection.classList.add("show");

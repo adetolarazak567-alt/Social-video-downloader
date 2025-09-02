@@ -39,7 +39,7 @@ app.post("/api/download", async (req, res) => {
         "X-RapidAPI-Key": process.env.RAPIDAPI_KEY,
         "X-RapidAPI-Host": "social-download-all-in-one.p.rapidapi.com"
       },
-      body: JSON.stringify({ url })
+      body: JSONgify({ url })
     });
 
     if (!response.ok) {
